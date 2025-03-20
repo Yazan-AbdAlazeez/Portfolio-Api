@@ -21,4 +21,11 @@ class Portfolio extends Model
     public function services() { return $this->hasMany(Service::class); }
     public function contact() { return $this->hasOne(Contact::class); }
     public function socialLinks() { return $this->hasMany(SocialLink::class); }
+
+    public function getImageUrlAttribute(){
+        if($this->profile_image){
+            return url("$this->profile_image");
+        }
+        return null;
+    }
 }

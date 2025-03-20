@@ -16,14 +16,14 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
+            'password' => Hash::make($validated['password']),
         ]);
 
         $token = $user->createToken('api_token')->plainTextToken;
@@ -41,14 +41,19 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json(["message" => "invalid creadentails"],401);
+
         }
 
-        $token = $user->createToken('api_token')->plainTextToken;
+        $token = $user->createToken($user->name . 'api_token')->plainTextToken;
+        $data= [
+            "id"=> $user->id,
+            "name"=> $user->name,
+            "email"=> $user->email,
 
-        return response()->json(['user' => $user, 'token' => $token]);
+        ];
+
+        return response()->json(['user' => $data, 'token' => $token]);
     }
 
     public function logout(Request $request)
