@@ -18,4 +18,11 @@ class Work extends Model
     ];
 
     public function portfolio() { return $this->belongsTo(Portfolio::class); }
+
+    public function getImageUrlAttribute(){
+        if($this->image_path){
+            return url("$this->image_path");
+        }
+        return null;
+    }
 }
