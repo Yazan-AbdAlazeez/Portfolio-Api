@@ -42,19 +42,27 @@ class WorkController extends Controller
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
-        $work = $portfolio->works()->findOrFail($workId);
+        $work = $portfolio->works()->find($workId);
+        if (!$work) {
+            return response()->json(['message' => 'Work not found'], 404);
+        }
 
         $work->update($request->all());
-        return response()->json($work);
+        return response()->json(['message' => 'Work updated successfully', 'Work' => $work], 200);
     }
 
     public function destroy($portfolioId, $workId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
-        $portfolio->works()->findOrFail($workId)->delete();
+        $work = $portfolio->works()->find($workId);
 
-        return response()->json(['message' => 'Deleted']);
+        if (!$work) {
+            return response()->json(['message' => 'Work not found'], 404);
+        }
+        $work->delete();
+
+        return response()->json(['message' => 'this Work deleted successfully']);
     }
 
     protected function authorizeAccess(Portfolio $portfolio)

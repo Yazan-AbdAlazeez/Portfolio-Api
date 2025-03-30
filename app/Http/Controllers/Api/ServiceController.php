@@ -42,17 +42,25 @@ class ServiceController extends Controller
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
-        $service = $portfolio->services()->findOrFail($serviceId);
+        $service = $portfolio->services()->find($serviceId);
+        if (!$service) {
+            return response()->json(['message' => 'Service not found'], 404);
+        }
 
         $service->update($request->all());
-        return response()->json($service);
+        return response()->json(['message' => 'Service updated successfully', 'service' => $service], 200);
     }
 
     public function destroy($portfolioId, $serviceId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
-        $portfolio->services()->findOrFail($serviceId)->delete();
+        $service = $portfolio->services()->find($serviceId);
+
+        if (!$service) {
+            return response()->json(['message' => 'Service not found'], 404);
+        }
+        $service->delete();
 
         return response()->json(['message' => 'this service deleted successfully']);
     }

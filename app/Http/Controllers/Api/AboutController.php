@@ -22,11 +22,13 @@ class AboutController extends Controller
         $about = $portfolio->about;
         if ($about) {
             $about->update($request->all());
+            return response()->json(['message' => 'About section updated successfully', 'about' => $about], 200);
+
         } else {
             $about = $portfolio->about()->create($request->all());
-        }
+            return response()->json(['message' => 'About section created successfully', 'about' => $about], 201);
 
-        return response()->json($about, 200);
+        }
     }
 
 

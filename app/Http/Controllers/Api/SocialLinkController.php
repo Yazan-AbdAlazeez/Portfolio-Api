@@ -42,17 +42,25 @@ class SocialLinkController extends Controller
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
-        $SocialLink = $portfolio->SocialLinks()->findOrFail($SocialLinkId);
+        $SocialLink = $portfolio->SocialLinks()->find($SocialLinkId);
+        if (!$SocialLink) {
+            return response()->json(['message' => 'SocialLink not found'], 404);
+        }
 
         $SocialLink->update($request->all());
-        return response()->json($SocialLink);
+        return response()->json(['message' => 'SocialLink updated successfully', 'SocialLink' => $SocialLink], 200);
     }
 
     public function destroy($portfolioId, $SocialLinkId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
-        $portfolio->SocialLinks()->findOrFail($SocialLinkId)->delete();
+        $SocialLink = $portfolio->SocialLinks()->find($SocialLinkId);
+
+        if (!$SocialLink) {
+            return response()->json(['message' => 'SocialLink not found'], 404);
+        }
+        $SocialLink->delete();
 
         return response()->json(['message' => 'this SocialLink deleted successfully']);
     }

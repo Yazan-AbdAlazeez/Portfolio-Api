@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Portfolio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PortfolioController extends Controller
@@ -44,6 +45,7 @@ class PortfolioController extends Controller
             ]);
     
             $portfolio = Portfolio::find($id);
+            $this->authorizeAccess($portfolio);
             if (!$portfolio) {
                 Log::error("Portfolio not found for ID: $id");
                 return response()->json(["message" => "Portfolio not found"], 404);
@@ -64,12 +66,20 @@ class PortfolioController extends Controller
     } 
     public function destroy($id)
     {
-        $portfolio = portfolio::find($id);
-        if ($portfolio) {
-            $portfolio->delete();
-            return response()->json(["message" => "portfolio deleted"], 200);
+        $portfolio = Portfolio::find($id);
+        if (!$portfolio) {
+            Log::error("Portfolio not found for ID: $id");
+            return response()->json(["message" => "Portfolio not found"], 404);
         }
-        return response()->json(["message" => "portfolio not found"], 404);
+    
+        $this->authorizeAccess($portfolio);
+        $portfolio->delete();
+        return response()->json(["message" => "Portfolio deleted successfully"], 200);
     }
-
+    protected function authorizeAccess(Portfolio $portfolio)
+    {
+        if ($portfolio->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+    }
 }

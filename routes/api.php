@@ -26,7 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('portfolios/{portfolioId}')->group(function () {
         Route::get("/about", [AboutController::class, "show"]);
         Route::post('/about', [AboutController::class, 'store']);
-        // Route::put("/about", [AboutController::class, "update"]);
         Route::delete("/about", [AboutController::class, "destroy"]);
     
 
