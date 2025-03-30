@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkController extends Controller
 {
-    public function index($portfolioId)
+    public function show($portfolioId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
-        $work = $portfolio->work;
+        $work = $portfolio->works;
 
         if (!$work) {
             return response()->json(['message' => 'work section not found'], 404);

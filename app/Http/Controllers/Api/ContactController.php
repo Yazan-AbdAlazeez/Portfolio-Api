@@ -7,41 +7,42 @@ use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AboutController extends Controller
+class ContactController extends Controller
 {
-
     public function store(Request $request, $portfolioId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
 
         $request->validate([
-            'content' => 'required|string',
+        'email' => 'required|email|max:255',
+        'phone' => 'nullable|string|max:20',
+        'address' => 'nullable|string|max:255',
+        'additional_info' => 'nullable|string',
         ]);
 
-        $about = $portfolio->about;
-        if ($about) {
-            $about->update($request->all());
+        $contact = $portfolio->contact;
+        if ($contact) {
+            $contact->update($request->all());
         } else {
-            $about = $portfolio->about()->create($request->all());
+            $contact = $portfolio->contact()->create($request->all());
         }
 
-        return response()->json($about, 200);
+        return response()->json($contact, 200);
     }
-
 
     public function show($portfolioId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
 
-        $about = $portfolio->about;
+        $contact = $portfolio->contact;
 
-        if (!$about) {
-            return response()->json(['message' => 'About section not found'], 404);
+        if (!$contact) {
+            return response()->json(['message' => 'Contact section not found'], 404);
         }
 
-        return response()->json($about, 200);
+        return response()->json($contact, 200);
     }
 
     public function destroy($portfolioId)
@@ -49,15 +50,15 @@ class AboutController extends Controller
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
 
-        $about = $portfolio->about;
+        $contact = $portfolio->contact;
 
-        if (!$about) {
-            return response()->json(['message' => 'About section not found'], 404);
+        if (!$contact) {
+            return response()->json(['message' => 'Contact section not found'], 404);
         }
 
-        $about->delete();
+        $contact->delete();
 
-        return response()->json(['message' => 'About section deleted successfully'], 200);
+        return response()->json(['message' => 'Contact section deleted successfully'], 200);
     }
 
 
