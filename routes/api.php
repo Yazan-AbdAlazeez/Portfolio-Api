@@ -28,13 +28,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/about', [AboutController::class, 'store']);
         Route::delete("/about", [AboutController::class, "destroy"]);
     
-
-        Route::get('/work', [WorkController::class, 'show']);
+        Route::get('/work', [WorkController::class, 'index']);
+        Route::get('/work/{workId}', [WorkController::class, 'show']);
         Route::post('/work', [WorkController::class, 'store']);
         Route::put('/work/{workId}', [WorkController::class, 'update']);
         Route::delete('/work/{workId}', [WorkController::class, 'destroy']);
 
-        Route::get('/service', [ServiceController::class, 'show']);
+        Route::get('/service', [ServiceController::class, 'index']);
+        Route::get('/service/{serviceId}', [ServiceController::class, 'show']);
         Route::post('/service', [ServiceController::class, 'store']);
         Route::put('/service/{serviceId}', [ServiceController::class, 'update']);
         Route::delete('/service/{serviceId}', [ServiceController::class, 'destroy']);
@@ -43,7 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/contact', [ContactController::class, 'store']);
         Route::delete('/contact', [ContactController::class, 'destroy']);
 
-        Route::get('/sociallink', [SocialLinkController::class, 'show']);
+        Route::get('/sociallink', [SocialLinkController::class, 'index']);
+        Route::get('/sociallink/{sociallinkId}', [SocialLinkController::class, 'show']);
         Route::post('/sociallink', [SocialLinkController::class, 'store']);
         Route::put('/sociallink/{sociallinkId}', [SocialLinkController::class, 'update']);
         Route::delete('/sociallink/{sociallinkId}', [SocialLinkController::class, 'destroy']);

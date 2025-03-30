@@ -9,21 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SocialLinkController extends Controller
 {
-    public function store(Request $request, $portfolioId)
-    {
-        $portfolio = Portfolio::findOrFail($portfolioId);
-        $this->authorizeAccess($portfolio);
-
-        $request->validate([
-        'platform' => 'required|string|max:255',
-        'url' => 'required|url|max:255',
-        ]);
-        $SocialLink = $portfolio->SocialLinks()->create($request->all());
-        return response()->json($SocialLink, 200);
-    }
-
-
-    public function show($portfolioId)
+    public function index($portfolioId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
@@ -36,7 +22,17 @@ class SocialLinkController extends Controller
 
         return response()->json($SocialLink, 200);
     }
-
+    public function store(Request $request, $portfolioId)
+    {
+        $portfolio = Portfolio::findOrFail($portfolioId);
+        $this->authorizeAccess($portfolio);
+        $request->validate([
+        'platform' => 'required|string|max:255',
+        'url' => 'required|url|max:255',
+        ]);
+        $SocialLink = $portfolio->SocialLinks()->create($request->all());
+        return response()->json($SocialLink, 200);
+    }
 
     public function update(Request $request, $portfolioId, $SocialLinkId)
     {
@@ -64,7 +60,16 @@ class SocialLinkController extends Controller
 
         return response()->json(['message' => 'this SocialLink deleted successfully']);
     }
-
+    public function show($portfolioId, $SocialLinkId)
+    {
+        $portfolio = Portfolio::findOrFail($portfolioId);
+        $this->authorizeAccess($portfolio);
+        $SocialLink = $portfolio->SocialLinks()->find($SocialLinkId);
+        if (!$SocialLink) {
+            return response()->json(['message' => 'SocialLink not found'], 404);
+        }
+        return response()->json($SocialLink, 200);
+    }
     protected function authorizeAccess(Portfolio $portfolio)
     {
         if ($portfolio->user_id !== Auth::id()) {

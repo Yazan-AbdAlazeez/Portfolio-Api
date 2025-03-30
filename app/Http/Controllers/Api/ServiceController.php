@@ -9,21 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
 {
-    public function store(Request $request, $portfolioId)
-    {
-        $portfolio = Portfolio::findOrFail($portfolioId);
-        $this->authorizeAccess($portfolio);
-
-        $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-        ]);
-        $service = $portfolio->services()->create($request->all());
-        return response()->json($service, 200);
-    }
-
-
-    public function show($portfolioId)
+    public function index($portfolioId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
@@ -63,6 +49,19 @@ class ServiceController extends Controller
         $service->delete();
 
         return response()->json(['message' => 'this service deleted successfully']);
+    }
+    
+    public function show($portfolioId, $serviceId)
+    {
+        $portfolio = Portfolio::findOrFail($portfolioId);
+        $this->authorizeAccess($portfolio);
+
+        $service = $portfolio->services()->find($serviceId);
+        if (!$service) {
+            return response()->json(['message' => 'Service not found'], 404);
+        }
+
+        return response()->json($service, 200);
     }
 
     protected function authorizeAccess(Portfolio $portfolio)

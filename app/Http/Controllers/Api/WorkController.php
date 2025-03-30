@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkController extends Controller
 {
-    public function show($portfolioId)
+    public function index($portfolioId)
     {
         $portfolio = Portfolio::findOrFail($portfolioId);
         $this->authorizeAccess($portfolio);
@@ -63,6 +63,19 @@ class WorkController extends Controller
         $work->delete();
 
         return response()->json(['message' => 'this Work deleted successfully']);
+    }
+    
+    public function show($portfolioId, $workId)
+    {
+        $portfolio = Portfolio::findOrFail($portfolioId);
+        $this->authorizeAccess($portfolio);
+
+        $work = $portfolio->works()->find($workId);
+        if (!$work) {
+            return response()->json(['message' => 'Work not found'], 404);
+        }
+
+        return response()->json($work, 200);
     }
 
     protected function authorizeAccess(Portfolio $portfolio)
