@@ -31,20 +31,7 @@ A scalable multi-user portfolio management system built باستخدام Laravel
 - Dashboard
 - API response example
 - Database structure
-
----
-
-## ⚙️ Installation
-
-```bash
-git clone https://github.com/Yazan-AbdAlazeez/Portfolio-Api
-cd Portfolio-Api
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-php artisan serve
-
+  
 ---
 
 ## 🎯 Key Highlights
@@ -66,3 +53,18 @@ php artisan serve
 ## 👨‍💻 Author
 
 Yazan AbdAlazeez
+
+---
+
+## ⚙️ Installation
+
+```bash
+git clone https://github.com/Yazan-AbdAlazeez/Portfolio-Api
+cd Portfolio-Api
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+
+
