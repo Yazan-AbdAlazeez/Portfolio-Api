@@ -44,3 +44,25 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan serve
+
+---
+
+## 🎯 Key Highlights
+
+- Designed RESTful APIs for scalable frontend integration
+- Built secure authentication and user management system
+- Structured backend logic following MVC architecture
+
+---
+
+## 📌 Future Improvements
+
+- Role-based permissions
+- API rate limiting
+- Docker support
+
+---
+
+## 👨‍💻 Author
+
+Yazan AbdAlazeez
