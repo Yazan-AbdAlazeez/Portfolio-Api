@@ -1,4 +1,4 @@
-# 🚀 Portfolio API (Laravel)
+# 🚀 Multi-user Portfolio Platform (Laravel)
 
 A scalable multi-user portfolio management system built باستخدام Laravel، يتيح للمستخدمين إنشاء وإدارة مشاريعهم الشخصية عبر لوحة تحكم متكاملة.
 
